@@ -9,6 +9,8 @@ namespace Data.Interfaces
 
         Product GetById(int id);
 
+        Product GetByCode(string code);
+
         Product Add(Product entity);
        
         void Update(Product entity);

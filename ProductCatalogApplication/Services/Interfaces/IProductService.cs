@@ -1,4 +1,5 @@
 ﻿using Domain;
+using Services.Dto;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,14 +8,14 @@ namespace Services.Interfaces
 {
     public interface IProductService
     {
-        IEnumerable<Product> GetAll();
+        IEnumerable<ProductDto> GetAll();
 
-        Product GetById(int id);
+        ProductDto GetById(int id);
 
-        Product Add(Product product);
+        void Add(ProductDto product);
 
-        void Update(Product product);
+        void Update(ProductDto product);
 
-        void Delete(Product product);
+        void Delete(int id);
     }
 }

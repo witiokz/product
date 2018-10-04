@@ -34,14 +34,14 @@ namespace ProductCatalogApplication
 
             services.AddMvc();
 
-            var connection = @"Server=(localdb)\mssqllocaldb;Database=ProductCatalogContext;Trusted_Connection=True;Integrated Security=True;ConnectRetryCount=0";
+            var connection = Configuration.GetConnectionString("ProductCatalogDb");
             services.AddDbContext<ProductCatalogContext>
                 (options => options.UseSqlServer(connection));
 
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
+                c.SwaggerDoc("v1", new Info { Title = "ProductCatalog API", Version = "v1" });
             });
         }
 
@@ -68,7 +68,7 @@ namespace ProductCatalogApplication
             // specifying the Swagger JSON endpoint.
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "ProductCatalog API V1");
             });
         }
     }

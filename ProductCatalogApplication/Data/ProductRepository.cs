@@ -3,6 +3,7 @@ using Domain;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace Data
@@ -24,6 +25,11 @@ namespace Data
         public Product GetById(int id)
         {
             return dbContext.Set<Product>().Find(id);
+        }
+
+        public Product GetByCode(string code)
+        {
+            return dbContext.Set<Product>().FirstOrDefaultAsync(i => i.Code == code).Result;
         }
 
         //public IEnumerable<T> List(ISpecification<T> spec)

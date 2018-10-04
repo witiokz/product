@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Services.Dto;
 using Services.Interfaces;
 
 namespace ProductCatalogApplication.Controllers
@@ -17,37 +18,39 @@ namespace ProductCatalogApplication.Controllers
             this.productService = productService;
         }
 
-        // GET api/values
+        // GET api/product
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IEnumerable<ProductDto> Get()
         {
-            var list = productService.GetAll();
-            return new string[] { "value1", "value2" };
+            return productService.GetAll();
         }
 
-        // GET api/values/5
+        // GET api/product/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public ProductDto Get(int id)
         {
-            return "value";
+            return productService.GetById(id);
         }
 
-        // POST api/values
+        // POST api/product
         [HttpPost]
-        public void Post([FromBody]string value)
+        public void Post([FromBody]ProductDto productDto)
         {
+            productService.Add(productDto);
         }
 
-        // PUT api/values/5
+        // PUT api/product/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        public void Put(int id, [FromBody]ProductDto productDto)
         {
+            productService.Update(productDto);
         }
 
-        // DELETE api/values/5
+        // DELETE api/product/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            productService.Delete(id);
         }
     }
 }

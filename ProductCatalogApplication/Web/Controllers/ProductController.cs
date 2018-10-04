@@ -1,37 +1,134 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Web.Models;
+using Web.API;
 
 namespace Web.Controllers
 {
     public class ProductController : Controller
     {
-        public IActionResult Index()
+        private readonly Client productApiClient;
+        private const string BaseUrl = "http://localhost:44958/";
+
+
+        public ProductController()
+        {
+            productApiClient = new Client(BaseUrl);
+        }
+
+        // GET: Product
+        public async Task<IActionResult> Index()
+        {
+            return View(await productApiClient.ApiProductGetAsync());
+        }
+
+        // GET: Product/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var product = await productApiClient.ApiProductByIdGetAsync(id.Value);
+
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            return View(product);
+        }
+
+        // GET: Product/Create
+        public IActionResult Create()
         {
             return View();
         }
 
-        public IActionResult About()
+        // POST: Product/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("Id,Code,Name,Photo,Price,LastUpdated")] ProductDto product)
         {
-            ViewData["Message"] = "Your application description page.";
-
-            return View();
+            if (ModelState.IsValid)
+            {
+                await productApiClient.ApiProductPostAsync(product);
+                return RedirectToAction(nameof(Index));
+            }
+            return View(product);
         }
 
-        public IActionResult Contact()
+        // GET: Product/Edit/5
+        public async Task<IActionResult> Edit(int? id)
         {
-            ViewData["Message"] = "Your contact page.";
+            if (id == null)
+            {
+                return NotFound();
+            }
 
-            return View();
+            var productDto = await productApiClient.ApiProductByIdGetAsync(id.Value);
+
+            if (productDto == null)
+            {
+                return NotFound();
+            }
+            return View(productDto);
         }
 
-        public IActionResult Error()
+        // POST: Product/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int? id, [Bind("Id,Code,Name,Photo,Price,LastUpdated")] ProductDto product)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            if (id != product.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                await productApiClient.ApiProductByIdPutAsync(id.Value, product);
+
+                return RedirectToAction(nameof(Index));
+            }
+            return View(product);
+        }
+
+        // GET: Product/Delete/5
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var productDto = await productApiClient.ApiProductByIdGetAsync(id.Value);
+
+            if (productDto == null)
+            {
+                return NotFound();
+            }
+
+            return View(productDto);
+        }
+
+        // POST: ProductDtoes/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            await productApiClient.ApiProductByIdDeleteAsync(id.Value);
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }
