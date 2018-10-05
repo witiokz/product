@@ -2,6 +2,7 @@
 using Domain;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
@@ -32,23 +33,10 @@ namespace Data
             return dbContext.Set<Product>().FirstOrDefaultAsync(i => i.Code == code).Result;
         }
 
-        //public IEnumerable<T> List(ISpecification<T> spec)
-        //{
-        //    // fetch a Queryable that includes all expression-based includes
-        //    var queryableResultWithIncludes = spec.Includes
-        //        .Aggregate(_dbContext.Set<T>().AsQueryable(),
-        //            (current, include) => current.Include(include));
-
-        //    // modify the IQueryable to include any string-based include statements
-        //    var secondaryResult = spec.IncludeStrings
-        //        .Aggregate(queryableResultWithIncludes,
-        //            (current, include) => current.Include(include));
-
-        //    // return the result of the query using the specification's criteria expression
-        //    return secondaryResult
-        //                    .Where(spec.Criteria)
-        //                    .AsEnumerable();
-        //}
+        public IEnumerable<Product> Search(string searchText)
+        {
+            return dbContext.Set<Product>().Where(i => i.Code == searchText || i.Name == searchText);
+        }
 
         public Product Add(Product entity)
         {

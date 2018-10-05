@@ -16,8 +16,11 @@ namespace Web.Controllers
         }
 
         // GET: Product
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchText = null)
         {
+
+
+
             return View(await productApiClient.ApiProductGetAsync());
         }
 
@@ -50,7 +53,7 @@ namespace Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Code,Name,Photo,Price,LastUpdated")] ProductDto product)
+        public async Task<IActionResult> Create([Bind("Id,Code,Name,Photo,Price,LastUpdated")] ProductDto product, IFormFile file)
         {
             if (ModelState.IsValid)
             {

@@ -10,6 +10,8 @@ namespace Services.Interfaces
     {
         IEnumerable<ProductDto> GetAll();
 
+        IEnumerable<ProductDto> Search(string searchText);
+
         ProductDto GetById(int id);
 
         void Add(ProductDto product);

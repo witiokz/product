@@ -11,6 +11,8 @@ namespace Data.Interfaces
 
         Product GetByCode(string code);
 
+        IEnumerable<Product> Search(string searchText);
+
         Product Add(Product entity);
        
         void Update(Product entity);

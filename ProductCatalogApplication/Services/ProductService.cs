@@ -31,6 +31,20 @@ namespace Services
                    };
         }
 
+        public IEnumerable<ProductDto> Search(string searchText)
+        {
+            return from product in productRepository.Search(searchText)
+                   select new ProductDto()
+                   {
+                       Id = product.Id,
+                       Name = product.Name,
+                       Code = product.Code,
+                       Price = product.Price,
+                       Photo = product.Photo,
+                       LastUpdated = product.LastUpdated
+                   };
+        }
+
         public ProductDto GetById(int id)
         {
             var product = productRepository.GetById(id);

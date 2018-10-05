@@ -20,7 +20,7 @@ namespace ProductCatalogApplication.Controllers
 
         // GET api/product
         [HttpGet]
-        public IEnumerable<ProductDto> Get()
+        public IEnumerable<ProductDto> Get(string searchText = null)
         {
             return productService.GetAll();
         }
